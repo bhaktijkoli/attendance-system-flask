@@ -15,6 +15,7 @@ ma = Marshmallow(app)
 # CONFIG
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['PUBLIC_FOLDER'] = "public"
+app.config['DATA_FOLDER'] = "data"
 
 # ROUTES
 from app.routes import index

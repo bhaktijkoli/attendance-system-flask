@@ -127,3 +127,6 @@ test
 
 # Public Folder
 public
+
+# Data Folder
+data
