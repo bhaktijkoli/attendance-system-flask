@@ -6,6 +6,8 @@ import numpy as np
 import os
 import time
 
+from PIL import Image, ImageDraw
+
 @app.route('/train', methods=['get'])
 def train():
     known_face_encodings = []
@@ -50,6 +52,9 @@ def train_check():
 
     attendees = [];
 
+    # pil_image = Image.fromarray(unknown_image)
+    # draw = ImageDraw.Draw(pil_image)
+
     for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
         matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.54)
 
@@ -60,7 +65,10 @@ def train_check():
         if matches[best_match_index]:
             name = known_face_names[best_match_index]
             attendees.append(name)
+            # draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
         print(name)
 
+    # del draw
+    # pil_image.save('test.jpg')
     return str(attendees)
