@@ -22,12 +22,18 @@ def students_post():
     student = Student(name, roll_no, filename)
     db.session.add(student)
     db.session.commit()
-    file = os.path.join(app.config['DATA_FOLDER'], "face_encodings.npy")
-    known_face_encodings = np.load(file)
-    file = os.path.join(app.config['DATA_FOLDER'], "face_names.npy")
-    known_face_names = np.load(file)
+    # IMAGE ENCODING
     image = face_recognition.load_image_file(os.path.join(app.config['PUBLIC_FOLDER'], filename))
     face_encoding = face_recognition.face_encodings(image)[0]
+    print(face_encoding)
+    # UPDATING DATA MODEL
+    file = os.path.join(app.config['DATA_FOLDER'], "face_encodings.npy")
+    known_face_encodings = np.load(file).tolist()
     known_face_encodings.append(face_encoding)
+    np.save(file, np.asarray(known_face_encodings))
+    file = os.path.join(app.config['DATA_FOLDER'], "face_names.npy")
+    known_face_names = np.load(file).tolist()
     known_face_names.append(student.name)
+    np.save(file, np.asarray(known_face_names))
+
     return StudentSchema.jsonify(student)
