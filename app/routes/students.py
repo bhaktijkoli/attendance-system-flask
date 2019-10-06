@@ -2,6 +2,8 @@ from flask import request, jsonify
 from app import app, db
 from werkzeug.utils import secure_filename
 from app.models import Student, StudentSchema, StudentsSchema
+import numpy as np
+import face_recognition
 import secrets
 import os
 
