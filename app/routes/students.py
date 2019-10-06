@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from werkzeug.utils import secure_filename
 from app import app, db
+from werkzeug.utils import secure_filename
 from app.models import Student, StudentSchema, StudentsSchema
 import secrets
 import os

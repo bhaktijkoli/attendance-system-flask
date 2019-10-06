@@ -13,10 +13,12 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 # CONFIG
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['PUBLIC_FOLDER'] = "public"
 
 # ROUTES
 from app.routes import index
 from app.routes import students
+from app.routes import train
 
 db.create_all()
