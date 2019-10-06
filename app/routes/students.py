@@ -37,3 +37,11 @@ def students_post():
     np.save(file, np.asarray(known_face_names))
 
     return StudentSchema.jsonify(student)
+
+@app.route('/students', methods=['delete'])
+def students_delete():
+    id = request.json['student']
+    student = Student.query.filter_by(id=id).first()
+    db.session.delete(student)
+    db.session.commit()
+    return "Ok";
