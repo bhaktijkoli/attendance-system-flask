@@ -10,7 +10,7 @@ if __name__ == '__main__':
     IPAddr = socket.gethostbyname(hostname)
     if '-pi' in sys.argv:
         IPAddr = str(check_output(['hostname', '-I']), 'utf-8')
-    desc = {'version': '1.0'}
+    desc = {'version': '1.0', 'host': 'http://'+IPAddr+":5000"}
     info = ServiceInfo("_http._tcp.local.",
     "Attendance System._http._tcp.local.",
     socket.inet_aton(IPAddr), 80, 0, 0,
@@ -18,6 +18,8 @@ if __name__ == '__main__':
 
     zeroconf = Zeroconf()
     zeroconf.register_service(info)
+
+    print("Zeroconf is running ", str(IPAddr))
 
     # RUN APPLICATION
     app.run(host='0.0.0.0', debug=True)
