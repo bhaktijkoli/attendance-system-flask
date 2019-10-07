@@ -71,4 +71,4 @@ def train_check():
 
     # del draw
     # pil_image.save('test.jpg')
-    return str(attendees)
+    return jsonify(attendees)
