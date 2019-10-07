@@ -30,10 +30,10 @@ def students_post():
     known_face_encodings = np.load(file).tolist()
     known_face_encodings.append(face_encoding)
     np.save(file, np.asarray(known_face_encodings))
-    file = os.path.join(app.config['DATA_FOLDER'], "face_names.npy")
-    known_face_names = np.load(file).tolist()
-    known_face_names.append(student.name)
-    np.save(file, np.asarray(known_face_names))
+    file = os.path.join(app.config['DATA_FOLDER'], "face_ids.npy")
+    known_face_ids = np.load(file).tolist()
+    known_face_ids.append(student.id)
+    np.save(file, np.asarray(known_face_ids))
 
     return StudentSchema.jsonify(student)
 

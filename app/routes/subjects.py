@@ -5,7 +5,6 @@ from app.models import Subject, SubjectSchema, SubjectsSchema
 @app.route('/subjects', methods=['get'])
 def subjects_get():
     subjects = Subject.query.all()
-    print(str(subjects))
     return SubjectsSchema.jsonify(subjects)
 
 @app.route('/subjects', methods=['post'])

@@ -30,7 +30,7 @@ if not os.path.exists(app.config['DATA_FOLDER']):
     known_face_encodings = []
     known_face_names = []
     np.save(os.path.join(app.config['DATA_FOLDER'], "face_encodings.npy"), np.asarray(known_face_encodings))
-    np.save(os.path.join(app.config['DATA_FOLDER'], "face_names.npy"), np.asarray(known_face_names))
+    np.save(os.path.join(app.config['DATA_FOLDER'], "face_ids.npy"), np.asarray(known_face_names))
     print("Created empty models")
 
 db.create_all()
