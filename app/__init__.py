@@ -21,6 +21,7 @@ app.config['DATA_FOLDER'] = "data"
 # ROUTES
 from app.routes import index
 from app.routes import students
+from app.routes import subjects
 from app.routes import train
 
 # CREATE EMPTY MODEL

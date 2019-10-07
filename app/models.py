@@ -1,4 +1,6 @@
 from app import db, ma
+
+# STUDENT MODEL
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100))
@@ -17,3 +19,18 @@ class StudentSchemaClass(ma.Schema):
 
 StudentSchema = StudentSchemaClass()
 StudentsSchema = StudentSchemaClass(many=True)
+
+# SUBJECT MODEL
+class Subject(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100))
+
+    def __init__(self, name):
+        self.name = name
+
+class SubjectSchemaClass(ma.Schema):
+    class Meta:
+        fields = ('id', 'name')
+
+SubjectSchema = SubjectSchemaClass()
+SubjectsSchema = SubjectSchemaClass(many=True)
