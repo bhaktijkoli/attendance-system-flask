@@ -23,6 +23,7 @@ from app.routes import index
 from app.routes import students
 from app.routes import subjects
 from app.routes import train
+from app.routes import attendance
 
 # CREATE EMPTY MODEL
 if not os.path.exists(app.config['DATA_FOLDER']):
