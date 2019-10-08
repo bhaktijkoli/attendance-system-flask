@@ -28,6 +28,9 @@ def attendance_add():
 
 @app.route('/attendance', methods=['post'])
 def attendance_post():
+    subjectid = request.form['subject']
+    date = request.form['date']
+    print(date)
     # LOAD MODEL DATA
     known_face_encodings = np.load(os.path.join(app.config['DATA_FOLDER'], "face_encodings.npy"))
     known_face_ids = np.load(os.path.join(app.config['DATA_FOLDER'], "face_ids.npy"))
@@ -66,8 +69,9 @@ def attendance_post():
     # CREATE ATTENDANCE
     students = Student.query.all()
 
-    subject = Subject.query.get(1)
-    attendance = Attendance(subject=subject, taken_at=datetime.datetime.utcnow())
+    subject = Subject.query.get(subjectid)
+    date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    attendance = Attendance(subject=subject, date=date.date())
     db.session.add(attendance)
 
     for student in students:
