@@ -25,13 +25,12 @@ def attendance_get():
 
 @app.route('/attendance/add', methods=['get'])
 def attendance_add():
-    return "Ok"
+    return attendance_post()
 
 @app.route('/attendance', methods=['post'])
 def attendance_post():
     subjectid = request.form['subject']
     date = request.form['date']
-    print(date)
     # LOAD MODEL DATA
     known_face_encodings = np.load(os.path.join(app.config['DATA_FOLDER'], "face_encodings.npy"))
     known_face_ids = np.load(os.path.join(app.config['DATA_FOLDER'], "face_ids.npy"))
