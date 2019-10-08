@@ -2,8 +2,8 @@ from flask import request, jsonify
 from app import app, db
 from app.models import Student, StudentSchema, StudentsSchema
 from app.models import Subject
-from app.models import Attendance
-from app.models import StudentAddendance
+from app.models import Attendance, AttendanceSchema
+from app.models import StudentAddendance, StudentAddendanceSchema
 import face_recognition
 import numpy as np
 import os
@@ -25,7 +25,7 @@ def attendance_get():
 
 @app.route('/attendance/add', methods=['get'])
 def attendance_add():
-    return attendance_post()
+    return "Ok"
 
 @app.route('/attendance', methods=['post'])
 def attendance_post():
@@ -38,11 +38,15 @@ def attendance_post():
     print("Model Loaded", time.process_time())
 
     # LOAD IMAGE FILE
-    imageFile = "test/test.jpg"
+    imageFile = os.path.join(app.config['PUBLIC_FOLDER'], 'attendance', secrets.token_hex(5) + '.jpg')
     if 'image' in request.files:
         image = request.files['image']
-        imageFile = os.path.join(app.config['PUBLIC_FOLDER'], 'attendance', secrets.token_hex(5) + '.jpg')
         image.save(imageFile)
+    else:
+        import picamera
+        with picamera.PiCamera() as camera:
+            camera.resolution = (1920, 1080)
+            camera.capture(imageFile)
 
     # LOAD IMAGE DATA
     unknown_image = face_recognition.load_image_file(imageFile)
@@ -92,4 +96,4 @@ def attendance_post():
     db.session.commit()
     print("Attendance created", time.process_time())
 
-    return "Ok"
+    return AttendanceSchema.jsonify(attendance)

@@ -39,6 +39,23 @@ class SubjectSchemaClass(ma.Schema):
 SubjectSchema = SubjectSchemaClass()
 SubjectsSchema = SubjectSchemaClass(many=True)
 
+# STUDENT ATTENDANCE MODEL
+class StudentAddendance(db.Model):
+    __tablename__ = 'student_attendances'
+    id = db.Column(db.Integer, primary_key = True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    attendance_id = db.Column(db.Integer, db.ForeignKey('attendances.id'))
+    present = db.Column(db.Integer, default='0')
+
+class StudentAddendanceSchemaClass(ma.Schema):
+    class Meta:
+        fields = ('id', 'student', 'present')
+
+    student = ma.Nested(StudentSchema)
+
+StudentAddendanceSchema = StudentAddendanceSchemaClass()
+StudentAddendancesSchema = StudentAddendanceSchemaClass(many=True)
+
 # ATTENDANCE MODEL
 class Attendance(db.Model):
     __tablename__ = 'attendances'
@@ -49,15 +66,10 @@ class Attendance(db.Model):
 
 class AttendanceSchemaClass(ma.Schema):
     class Meta:
-        fields = ('id', 'name')
+        fields = ('id', 'date', 'subject', 'students')
+
+    subject = ma.Nested(SubjectSchema)
+    students = ma.Nested(StudentAddendancesSchema)
 
 AttendanceSchema = AttendanceSchemaClass()
 AttendancesSchema = AttendanceSchemaClass(many=True)
-
-# STUDENT ATTENDANCE MODEL
-class StudentAddendance(db.Model):
-    __tablename__ = 'student_attendances'
-    id = db.Column(db.Integer, primary_key = True)
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    attendance_id = db.Column(db.Integer, db.ForeignKey('attendances.id'))
-    present = db.Column(db.Integer, default='0')
