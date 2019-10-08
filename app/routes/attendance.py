@@ -9,6 +9,7 @@ import numpy as np
 import os
 import time
 import datetime
+import secrets
 from PIL import Image, ImageDraw
 
 @app.route('/attendance', methods=['get'])
@@ -36,8 +37,15 @@ def attendance_post():
     known_face_ids = np.load(os.path.join(app.config['DATA_FOLDER'], "face_ids.npy"))
     print("Model Loaded", time.process_time())
 
+    # LOAD IMAGE FILE
+    imageFile = "test/test.jpg"
+    if 'image' in request.files:
+        image = request.files['image']
+        imageFile = os.path.join(app.config['PUBLIC_FOLDER'], 'attendance', secrets.token_hex(5) + '.jpg')
+        image.save(imageFile)
+
     # LOAD IMAGE DATA
-    unknown_image = face_recognition.load_image_file("test/test.jpg")
+    unknown_image = face_recognition.load_image_file(imageFile)
 
     face_locations = face_recognition.face_locations(unknown_image)
     face_encodings = face_recognition.face_encodings(unknown_image, face_locations)
@@ -45,8 +53,8 @@ def attendance_post():
     print("Image Loaded", time.process_time())
 
 
-    # pil_image = Image.fromarray(unknown_image)
-    # draw = ImageDraw.Draw(pil_image)
+    pil_image = Image.fromarray(unknown_image)
+    draw = ImageDraw.Draw(pil_image)
 
     # IDENTIFICATION
     attendees_ids = [];
@@ -59,12 +67,12 @@ def attendance_post():
             id = known_face_ids[best_match_index]
             if not id in attendees_ids:
                 attendees_ids.append(id)
-            # draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
+            draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
     print("Identification done", time.process_time())
 
-    # del draw
-    # pil_image.save('test.jpg')
+    del draw
+    pil_image.save('last_result.jpg')
 
     # CREATE ATTENDANCE
     students = Student.query.all()
